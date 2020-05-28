@@ -20,6 +20,8 @@ def main():
     help='target file')
     parser.add_argument('--name',type=str,default='',metavar='N',
     help='the name of the registration result')
+    parse.add)argument('--save',type=str,default='npy',metavar='N',
+    help='choose the save form of result, it could be npy or ply')
 
     args=parser.parse_args()
     
@@ -76,11 +78,13 @@ def main():
 #Now transform the data mesh to fit the model mesh
     transform_model_points = (transform.dot(np.hstack((np_b_points, np.ones((Nd, 1)))).T)).T;
     transform_model_points = transform_model_points[:,:3];
-    if not os.path.exists('indermidiate_data'):
-        os.makedirs('indermidiate_data')
-    #PLY_FILE_HEADER = "ply\nformat ascii 1.0\ncomment PYTHON generated\nelement vertex %s\nproperty float x\nproperty float y\nproperty float z\nend_header"%(Nd);
-    np.save('indermidiate_data/{}.npy'.format(args.name),transform_model_points)
-    #np.savetxt('/content/go-icp_cython/tests/data_bunny_transformed.ply', transform_model_points, header = PLY_FILE_HEADER, comments='');
+    if not os.path.exists('intermidiate_data'):
+        os.makedirs('intermidiate_data')
+    if args.save=='npy':
+        np.save('intermidiate_data/{}.npy'.format(args.name),transform_model_points)
+    elif args.save='ply':
+        PLY_FILE_HEADER = "ply\nformat ascii 1.0\ncomment PYTHON generated\nelement vertex %s\nproperty float x\nproperty float y\nproperty float z\nend_header"%(Nd);
+        np.savetxt('/content/go-icp_cython/tests/data_bunny_transformed.ply', transform_model_points, header = PLY_FILE_HEADER, comments='');
 
     print(optR);
     print(optT);
